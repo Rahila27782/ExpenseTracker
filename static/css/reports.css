@@ -1,0 +1,229 @@
+/* ==========================================
+   REPORTS PAGE
+========================================== */
+
+.reports-container{
+    max-width:480px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ==========================
+   Report Actions
+========================== */
+
+.report-actions{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.report-actions button{
+    flex:1;
+    border:none;
+    border-radius:15px;
+    background:var(--accent);
+    color:white;
+    padding:14px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-size:15px;
+    font-weight:600;
+    transition:.25s;
+}
+
+.report-actions button:hover{
+    transform:translateY(-2px);
+    background:var(--accent-hover);
+}
+
+/* ==========================
+   Cards
+========================== */
+
+.report-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.report-card h2{
+    margin-bottom:20px;
+    color:var(--text);
+}
+
+/* ==========================
+   Summary Grid
+========================== */
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.summary-grid div{
+    background:var(--card-soft);
+    border-radius:16px;
+    padding:18px;
+    text-align:center;
+}
+
+.summary-grid p{
+    color:var(--subtext);
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.summary-grid h3{
+    color:var(--text);
+    font-size:22px;
+}
+
+/* ==========================
+   Section Titles
+========================== */
+
+.section-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.section-title-row h3{
+    color:var(--text);
+    font-size:22px;
+}
+
+.section-title-row span{
+    color:var(--subtext);
+    font-size:14px;
+}
+
+/* ==========================
+   Breakdown
+========================== */
+
+.breakdown-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.breakdown-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--border);
+}
+
+.breakdown-row:last-child{
+    border-bottom:none;
+}
+
+.breakdown-row h4{
+    color:var(--text);
+    margin-bottom:4px;
+}
+
+.breakdown-row p{
+    color:var(--subtext);
+    font-size:14px;
+}
+
+.breakdown-row strong{
+    color:var(--accent);
+    font-size:17px;
+}
+
+/* ==========================
+   Statistics
+========================== */
+
+.stats-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.stats-list div{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+}
+
+.stats-list div:last-child{
+    border-bottom:none;
+}
+
+.stats-list span{
+    color:var(--subtext);
+}
+
+.stats-list strong{
+    color:var(--text);
+}
+
+/* ==========================
+   Empty State
+========================== */
+
+.empty-state{
+    text-align:center;
+    padding:40px 10px;
+}
+
+/* ==========================
+   Print
+========================== */
+
+@media print{
+
+    body{
+        background:white;
+        color:#222;
+    }
+
+    .back-btn,
+    .report-actions{
+        display:none;
+    }
+
+    .report-card{
+        box-shadow:none;
+        border:1px solid #ddd;
+        background:white;
+        color:#222;
+        page-break-inside:avoid;
+    }
+
+    .summary-grid div{
+        background:#fafafa;
+    }
+
+}
+
+/* ==========================
+   Mobile
+========================== */
+
+@media(max-width:480px){
+
+    .summary-grid{
+        grid-template-columns:1fr;
+    }
+
+    .report-actions{
+        flex-direction:column;
+    }
+
+}

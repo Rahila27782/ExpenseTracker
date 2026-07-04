@@ -1,0 +1,331 @@
+/* ==========================================
+   PROFILE PAGE
+========================================== */
+
+.profile-container{
+    max-width:480px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ==========================
+   Header
+========================== */
+
+.page-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.back-btn{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:var(--card);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-decoration:none;
+    box-shadow:var(--shadow);
+}
+
+.back-btn .material-icons{
+    color:var(--text);
+    font-size:26px;
+}
+
+.page-header h1{
+    margin:0;
+    font-size:32px;
+    color:var(--text);
+}
+
+.page-header p{
+    margin-top:4px;
+    color:var(--subtext);
+    font-size:14px;
+}
+
+/* ==========================
+   Profile Card
+========================== */
+
+.profile-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:30px 20px;
+    text-align:center;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.profile-image{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    margin-bottom:20px;
+}
+
+.profile-image .material-icons{
+    font-size:70px;
+    color:var(--accent);
+}
+
+.profile-card h2{
+    color:var(--text);
+    margin-bottom:6px;
+}
+
+.profile-card p,
+.profile-card small{
+    color:var(--subtext);
+    font-size:15px;
+}
+
+/* ==========================
+   Statistics
+========================== */
+
+.stats-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.stats-card h3{
+    margin-bottom:20px;
+    color:var(--text);
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.stat-box{
+    background:var(--card-soft);
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+}
+
+.stat-box .material-icons{
+    font-size:32px;
+    margin-bottom:12px;
+}
+
+.green{
+    color:var(--success);
+}
+
+.red{
+    color:var(--danger);
+}
+
+.blue{
+    color:#1E88E5;
+}
+
+.gold{
+    color:var(--accent);
+}
+
+.stat-box h4{
+    margin-bottom:6px;
+    color:var(--text);
+    font-size:20px;
+}
+
+.stat-box small{
+    color:var(--subtext);
+}
+
+/* ==========================
+   Menu
+========================== */
+
+.menu-card{
+    background:var(--card);
+    border-radius:22px;
+    overflow:hidden;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.menu-card a{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:18px 22px;
+    text-decoration:none;
+    color:var(--text);
+    border-bottom:1px solid var(--border);
+    transition:.25s;
+}
+
+.menu-card a:last-child{
+    border-bottom:none;
+}
+
+.menu-card a:hover{
+    background:var(--card-soft);
+}
+
+.menu-card .right{
+    margin-left:auto;
+    color:var(--subtext);
+}
+
+/* ==========================
+   Auth / Logout
+========================== */
+
+.auth-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.login-action,
+.register-action{
+    text-align:center;
+    padding:15px;
+    border-radius:15px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.login-action{
+    background:var(--accent);
+    color:white;
+}
+
+.register-action{
+    background:var(--accent-soft);
+    color:var(--accent);
+}
+
+.logout-action{
+    background:#ffebee;
+    color:#e53935;
+    padding:15px;
+    border-radius:15px;
+    text-decoration:none;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+body.dark .logout-action{
+    background:#2a2a2a;
+    color:#ff6b6b;
+    border:1px solid var(--border);
+}
+
+body.dark .logout-action:hover{
+    background:#333;
+}
+
+/* ==========================
+   Version Card
+========================== */
+
+.version-card{
+    background:var(--card);
+    border-radius:18px;
+    text-align:center;
+    padding:20px;
+    box-shadow:var(--shadow);
+}
+
+.version-card p{
+    color:var(--text);
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.version-card small{
+    color:var(--subtext);
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media(max-width:480px){
+
+    .profile-container{
+        padding:18px;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* ==========================
+   PROFILE IMAGE UPLOAD
+========================== */
+
+.profile-image{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    overflow:hidden;
+    margin:auto;
+    margin-bottom:20px;
+    background:#FFF8E1;
+    border:4px solid #D4AF37;
+}
+
+.profile-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.upload-form{
+    margin-top:20px;
+}
+
+.upload-form input[type=file]{
+    display:none;
+}
+
+.upload-btn{
+    width:100%;
+    background:var(--accent);
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:14px;
+    font-weight:600;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.upload-btn:hover{
+    background:var(--accent-hover);
+}

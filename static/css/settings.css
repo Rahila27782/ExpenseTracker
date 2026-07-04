@@ -1,0 +1,157 @@
+/* ==========================================
+   SETTINGS PAGE
+========================================== */
+
+.settings-container{
+    max-width:480px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ==========================
+   Settings Card
+========================== */
+
+.settings-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+/* ==========================
+   Section Title
+========================== */
+
+.settings-card h3{
+    color:var(--text);
+}
+
+/* ==========================
+   Setting Row
+========================== */
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 0;
+    border-bottom:1px solid var(--border);
+    transition:.25s;
+}
+
+.setting-row:last-child{
+    border-bottom:none;
+}
+
+.setting-row:hover{
+    background:var(--card-soft);
+    border-radius:12px;
+    padding-left:12px;
+    padding-right:12px;
+}
+
+.setting-row h3{
+    margin:0;
+    color:var(--text);
+    font-size:18px;
+}
+
+.setting-row p{
+    margin-top:5px;
+    color:var(--subtext);
+    font-size:14px;
+}
+
+.setting-row span{
+    background:var(--accent-soft);
+    color:var(--accent);
+    padding:8px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* ==========================
+   Currency / Theme Form
+========================== */
+
+.currency-form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-top:15px;
+}
+
+.currency-form label{
+    color:var(--text);
+    font-weight:600;
+}
+
+.currency-form select{
+    width:100%;
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:var(--card-soft);
+    color:var(--text);
+    font-size:15px;
+}
+
+.currency-form select:focus{
+    border-color:var(--accent);
+}
+
+.save-btn{
+    border:none;
+    border-radius:14px;
+    background:var(--accent);
+    color:#fff;
+    padding:14px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.save-btn:hover{
+    background:var(--accent-hover);
+}
+
+/* ==========================
+   About
+========================== */
+
+.about-card h3{
+    color:var(--text);
+    margin-bottom:15px;
+}
+
+.about-card p{
+    color:var(--subtext);
+    line-height:1.7;
+    text-align:justify;
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media(max-width:480px){
+
+    .settings-container{
+        padding:18px;
+    }
+
+    .setting-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .setting-row span{
+        align-self:flex-end;
+    }
+
+}

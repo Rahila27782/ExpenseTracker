@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reports
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reports.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="reports-container">
+
+    <header class="page-header">
+        <a href="{{ url_for('home', month=selected_month, year=selected_year) }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Reports</h1>
+            <p>Monthly report for {{ selected_month }}/{{ selected_year }}</p>
+        </div>
+    </header>
+
+    {% if not user %}
+
+    <div class="empty-state">
+
+        <span class="material-icons">description</span>
+
+        <p>No reports available</p>
+
+        <small>
+            Login or create an account to generate monthly financial reports.
+        </small>
+
+        <div class="guest-actions">
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Create Account</a>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <section class="report-actions">
+
+        <button onclick="window.print()">
+            <span class="material-icons">print</span>
+            Print
+        </button>
+
+        <button onclick="downloadReportCSV()">
+            <span class="material-icons">download</span>
+            CSV
+        </button>
+
+    </section>
+
+    <section class="report-card main-summary">
+
+        <h2>Monthly Financial Summary</h2>
+
+        <div class="summary-grid">
+
+            <div>
+                <p>Total Income</p>
+                <h3>{{ currency_symbol }}{{ "%.2f"|format(total_income) }}</h3>
+            </div>
+
+            <div>
+                <p>Total Expenses</p>
+                <h3>{{ currency_symbol }}{{ "%.2f"|format(total_expense) }}</h3>
+            </div>
+
+            <div>
+                <p>Balance</p>
+                <h3>{{ currency_symbol }}{{ "%.2f"|format(balance) }}</h3>
+            </div>
+
+            <div>
+                <p>Savings Rate</p>
+
+                {% if total_income > 0 %}
+                    <h3>{{ "%.1f"|format((balance / total_income) * 100) }}%</h3>
+                {% else %}
+                    <h3>0%</h3>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="report-card">
+
+        <div class="section-title-row">
+            <h3>Expense Breakdown</h3>
+            <span>{{ total_transactions }} transactions</span>
+        </div>
+
+        {% if breakdown_data %}
+
+        <div class="breakdown-list">
+
+            {% for item in breakdown_data %}
+
+            <div class="breakdown-row">
+
+                <div>
+                    <h4>{{ item.category }}</h4>
+                    <p>{{ currency_symbol }}{{ "%.2f"|format(item.amount) }}</p>
+                </div>
+
+                <strong>{{ item.percent }}%</strong>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <span class="material-icons">receipt_long</span>
+
+            {% if user %}
+
+                <p>No expenses found for this month</p>
+
+                <small>
+                    Add expenses to generate a detailed report.
+                </small>
+
+            {% else %}
+
+                <p>No expense breakdown available</p>
+
+                <small>
+                    Your report breakdown will appear after login and expense entry.
+                </small>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    <section class="report-card">
+
+        <div class="section-title-row">
+            <h3>Report Statistics</h3>
+            <span>Overview</span>
+        </div>
+
+        <div class="stats-list">
+
+            <div>
+                <span>Highest Expense</span>
+                <strong>{{ currency_symbol }}{{ "%.2f"|format(highest_expense) }}</strong>
+            </div>
+
+            <div>
+                <span>Average Expense</span>
+                <strong>{{ currency_symbol }}{{ "%.2f"|format(average_expense) }}</strong>
+            </div>
+
+            <div>
+                <span>Total Transactions</span>
+                <strong>{{ total_transactions }}</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script id="reportData" type="application/json">
+{
+    "month": {{ selected_month | tojson }},
+    "year": {{ selected_year | tojson }},
+    "totalIncome": {{ total_income | tojson }},
+    "totalExpense": {{ total_expense | tojson }},
+    "balance": {{ balance | tojson }},
+    "transactions": {{ total_transactions | tojson }}
+}
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}

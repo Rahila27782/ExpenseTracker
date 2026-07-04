@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}
+Balance
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/balance.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="balance-container">
+
+    <header class="page-header">
+        <a href="{{ url_for('home', month=selected_month, year=selected_year) }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Balance</h1>
+            <p>Monthly financial summary</p>
+        </div>
+    </header>
+
+    {% if not user %}
+
+    <div class="empty-state">
+
+        <span class="material-icons">account_balance_wallet</span>
+
+        <p>No balance data yet</p>
+
+        <small>
+            Login or create an account to track your income,
+            expenses and balance.
+        </small>
+
+        <div class="guest-actions">
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Create Account</a>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <section class="balance-main-card">
+
+        <p>Current Balance</p>
+
+        <h2>
+            {{ currency_symbol }}{{ "%.2f"|format(balance) }}
+        </h2>
+
+    </section>
+
+    <section class="summary-grid">
+
+        <div class="summary-card income-box">
+
+            <span class="material-icons">trending_up</span>
+
+            <p>Total Income</p>
+
+            <h3>
+                {{ currency_symbol }}{{ "%.2f"|format(total_income) }}
+            </h3>
+
+        </div>
+
+        <div class="summary-card expense-box">
+
+            <span class="material-icons">trending_down</span>
+
+            <p>Total Expenses</p>
+
+            <h3>
+                {{ currency_symbol }}{{ "%.2f"|format(total_expense) }}
+            </h3>
+
+        </div>
+
+    </section>
+
+    <section class="card balance-info-card">
+
+        <div class="section-heading">
+
+            <span class="material-icons">
+                account_balance_wallet
+            </span>
+
+            <h3>Balance Insight</h3>
+
+        </div>
+
+        {% if not user %}
+
+            <p>
+                Login to receive personalized balance insights.
+            </p>
+
+        {% elif balance > 0 %}
+
+            <p class="positive">
+                Great! You saved
+                {{ currency_symbol }}{{ "%.2f"|format(balance) }}
+                this month.
+            </p>
+
+        {% elif balance < 0 %}
+
+            <p class="negative">
+                You spent
+                {{ currency_symbol }}{{ "%.2f"|format(-balance) }}
+                more than your income this month.
+            </p>
+
+        {% else %}
+
+            <p>
+                Your income and expenses are balanced for this month.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}

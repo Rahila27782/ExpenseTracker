@@ -1,0 +1,379 @@
+/* ===========================================
+   INCOME PAGE
+=========================================== */
+
+.income-container{
+    max-width:480px;
+    margin:auto;
+    padding:25px 18px 40px;
+}
+
+/* ================= TOTAL CARD ================= */
+
+.total-card{
+    background:linear-gradient(135deg,var(--success),#6EE7A6);
+    color:white;
+    border-radius:24px;
+    padding:28px;
+    margin-bottom:25px;
+    box-shadow:0 15px 35px rgba(46,204,113,.30);
+    text-align:center;
+}
+
+.total-card p,
+.total-card h2{
+    color:white;
+}
+
+.total-card p{
+    font-size:16px;
+    margin-bottom:10px;
+}
+
+.total-card h2{
+    font-size:40px;
+    font-weight:700;
+}
+
+/* ================= LIST CARD ================= */
+
+.income-list-card{
+    background:var(--card);
+    border-radius:24px;
+    padding:20px;
+    box-shadow:var(--shadow);
+}
+
+/* ================= TITLE ================= */
+
+.section-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.section-title-row h3{
+    font-size:20px;
+    color:var(--text);
+}
+
+.section-title-row span{
+    color:var(--subtext);
+    font-size:14px;
+}
+
+/* ================= INCOME ITEM ================= */
+
+.income-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.income-item:last-child{
+    border-bottom:none;
+}
+
+.income-left{
+    display:flex;
+    gap:15px;
+    align-items:flex-start;
+}
+
+.source-icon{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:var(--success-soft);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.source-icon .material-icons{
+    color:var(--success);
+    font-size:28px;
+}
+
+.income-left h4{
+    font-size:17px;
+    margin-bottom:4px;
+    color:var(--text);
+}
+
+.income-left p{
+    font-size:13px;
+    color:var(--subtext);
+}
+
+.income-left small{
+    display:block;
+    margin-top:6px;
+    color:var(--subtext);
+    font-style:italic;
+}
+
+.income-right{
+    color:var(--success);
+    font-size:18px;
+    font-weight:700;
+}
+
+/* ================= ACTION BUTTONS ================= */
+
+.action-buttons{
+    display:flex;
+    gap:8px;
+    margin-left:10px;
+}
+
+.action-buttons a,
+.action-buttons button{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+}
+
+.edit-btn{
+    background:#EAF2FF;
+    color:#3498DB;
+    border:none;
+    cursor:pointer;
+}
+
+.delete-btn{
+    background:var(--danger-soft);
+    color:var(--danger);
+    border:none;
+    cursor:pointer;
+}
+
+.action-buttons .material-icons{
+    font-size:20px;
+}
+
+/* ================= MODALS ================= */
+
+.delete-modal,
+.edit-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+}
+
+.edit-modal{
+    z-index:2100;
+}
+
+.delete-box,
+.edit-box{
+    width:90%;
+    max-width:400px;
+    background:var(--card);
+    color:var(--text);
+    border-radius:24px;
+    padding:25px;
+    animation:pop .25s ease;
+    box-shadow:var(--shadow);
+}
+
+.delete-box{
+    max-width:360px;
+    text-align:center;
+}
+
+.edit-box{
+    max-height:90vh;
+    overflow-y:auto;
+}
+
+.warning-icon{
+    font-size:50px;
+    color:var(--danger);
+    margin-bottom:10px;
+}
+
+.delete-box h2,
+.edit-box h2{
+    color:var(--text);
+    margin-bottom:18px;
+}
+
+.delete-box p{
+    color:var(--subtext);
+    line-height:1.5;
+}
+
+.edit-box h2{
+    text-align:center;
+}
+
+.edit-box label{
+    display:block;
+    margin-top:14px;
+    margin-bottom:7px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.edit-box input,
+.edit-box select,
+.edit-box textarea{
+    width:100%;
+    background:var(--card-soft);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:13px;
+    font-size:15px;
+}
+
+.delete-actions,
+.edit-actions{
+    display:flex;
+    gap:12px;
+    margin-top:22px;
+}
+
+.cancel-delete,
+.confirm-delete,
+.cancel-edit,
+.update-edit{
+    flex:1;
+    padding:13px;
+    border-radius:16px;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.cancel-delete,
+.cancel-edit{
+    background:var(--card-soft);
+    color:var(--text);
+}
+
+.confirm-delete{
+    background:var(--danger);
+    color:white;
+}
+
+.update-edit{
+    background:var(--success);
+    color:white;
+}
+
+@keyframes pop{
+    from{
+        opacity:0;
+        transform:scale(.92);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* ================= EMPTY ================= */
+
+.empty-state{
+    padding:60px 20px;
+    text-align:center;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:500px){
+
+    .income-container{
+        padding:20px 15px 30px;
+    }
+
+    .page-header h1{
+        font-size:26px;
+    }
+
+    .total-card h2{
+        font-size:34px;
+    }
+
+    .income-right{
+        font-size:16px;
+    }
+
+}
+
+/* ==========================
+   SEARCH
+========================== */
+
+.search-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card-soft);
+    border-radius:16px;
+    padding:12px 16px;
+    margin-bottom:20px;
+}
+
+.search-box .material-icons{
+    color:var(--subtext);
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:var(--text);
+    font-size:15px;
+}
+
+.search-box input::placeholder{
+    color:var(--subtext);
+}
+
+.filter-row{
+    display:grid;
+    grid-template-columns:1fr 140px;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.sort-box{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--card-soft);
+    border-radius:16px;
+    padding:12px;
+}
+
+.sort-box .material-icons{
+    color:var(--subtext);
+}
+
+.sort-box select{
+    border:none;
+    outline:none;
+    background:transparent;
+    color:var(--text);
+    font-size:14px;
+}
+
+@media(max-width:480px){
+    .filter-row{
+        grid-template-columns:1fr;
+    }
+}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="empty-state" style="min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:30px;">
+    <span class="material-icons" style="font-size:80px;">warning</span>
+    <h1>500</h1>
+    <p>Something went wrong</p>
+    <small>An unexpected error occurred. Please try again later.</small>
+
+    <div class="guest-actions">
+        <a href="{{ url_for('home') }}">Go Home</a>
+    </div>
+</div>
+{% endblock %}

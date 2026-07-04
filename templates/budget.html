@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+Budget Planner
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/budget.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="budget-container">
+
+    <header class="page-header">
+
+        <a href="{{ url_for('home', month=selected_month, year=selected_year) }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Budget</h1>
+            <p>Monthly budget for {{ selected_month }}/{{ selected_year }}</p>
+        </div>
+
+    </header>
+
+    {% if not user %}
+
+    <div class="empty-state">
+
+        <span class="material-icons">account_balance</span>
+
+        <p>No budget set yet</p>
+
+        <small>
+            Login or create an account to save monthly budgets.
+        </small>
+
+        <div class="guest-actions">
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Create Account</a>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <section class="budget-card">
+
+        <p>Monthly Budget</p>
+
+        <h2>
+            {{ currency_symbol }}{{ "%.2f"|format(budget_amount) }}
+        </h2>
+
+    </section>
+
+    <section class="budget-form-card">
+
+        <form method="POST" action="{{ url_for('save_budget') }}">
+
+            <input type="hidden" name="month" value="{{ selected_month }}">
+            <input type="hidden" name="year" value="{{ selected_year }}">
+
+            <label>Set / Update Budget</label>
+
+            <input
+                type="number"
+                name="amount"
+                placeholder="Enter monthly budget"
+                step="0.01"
+                min="0"
+                required>
+
+            <button type="submit">
+                Save Budget
+            </button>
+
+        </form>
+
+    </section>
+
+    <section class="budget-status-card">
+
+        <div class="status-row">
+            <span>Spent</span>
+            <strong>
+                {{ currency_symbol }}{{ "%.2f"|format(total_expense) }}
+            </strong>
+        </div>
+
+        <div class="status-row">
+            <span>Remaining</span>
+            <strong>
+                {{ currency_symbol }}{{ "%.2f"|format(remaining_budget) }}
+            </strong>
+        </div>
+
+        <div class="progress-track">
+            <div
+                class="progress-fill"
+                data-width="{{ budget_percent }}">
+            </div>
+        </div>
+
+        <p class="progress-text">
+            {{ budget_percent }}% used
+        </p>
+
+        {% if budget_amount == 0 %}
+
+            <div class="budget-message neutral">
+                Set a monthly budget to start tracking your spending.
+            </div>
+
+        {% elif remaining_budget >= 0 %}
+
+            <div class="budget-message success">
+                ✅ You are within your budget.
+            </div>
+
+        {% else %}
+
+            <div class="budget-message danger">
+                ⚠ Budget exceeded by
+                {{ currency_symbol }}{{ "%.2f"|format(-remaining_budget) }}
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/budget.js') }}"></script>
+{% endblock %}

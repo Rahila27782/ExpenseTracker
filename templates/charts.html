@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}
+Charts & Analytics
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/charts.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="charts-container">
+
+    <header class="page-header">
+        <a href="{{ url_for('home', month=selected_month, year=selected_year) }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Charts</h1>
+            <p>Analytics for {{ selected_month }}/{{ selected_year }}</p>
+        </div>
+    </header>
+
+    <section class="stats-grid">
+        <div class="stat-card">
+            <span class="material-icons income-icon">trending_up</span>
+            <p>Total Income</p>
+            <h3>{{ currency_symbol }}{{ "%.2f"|format(total_income) }}</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="material-icons expense-icon">trending_down</span>
+            <p>Total Expenses</p>
+            <h3>{{ currency_symbol }}{{ "%.2f"|format(total_expense) }}</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="material-icons balance-icon">account_balance_wallet</span>
+            <p>Balance</p>
+            <h3>{{ currency_symbol }}{{ "%.2f"|format(balance) }}</h3>
+        </div>
+
+        <div class="stat-card">
+            <span class="material-icons warning-icon">priority_high</span>
+            <p>Highest Expense</p>
+            <h3>{{ currency_symbol }}{{ "%.2f"|format(highest_expense) }}</h3>
+        </div>
+    </section>
+
+    <section class="chart-card">
+        <div class="section-title-row">
+            <h3>Expense Categories</h3>
+            <span>Pie Chart</span>
+        </div>
+
+        {% if category_labels %}
+            <canvas id="expensePieChart"></canvas>
+        {% else %}
+            <div class="empty-state">
+                <span class="material-icons">pie_chart</span>
+
+                {% if user %}
+                    <p>No expense data for this month</p>
+                    <small>Add expenses to generate charts.</small>
+                {% else %}
+                    <p>No chart data available</p>
+                    <small>Login or create an account to view financial charts.</small>
+
+                    <div class="guest-actions">
+                        <a href="{{ url_for('auth.login') }}">Login</a>
+                        <a href="{{ url_for('auth.register') }}">Create Account</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="chart-card">
+        <div class="section-title-row">
+            <h3>Income vs Expenses</h3>
+            <span>Bar Chart</span>
+        </div>
+
+        <canvas id="incomeExpenseChart"></canvas>
+    </section>
+
+    <section class="chart-card">
+        <div class="section-title-row">
+            <h3>Top Spending Categories</h3>
+            <span>{{ total_transactions }} transactions</span>
+        </div>
+
+        {% if breakdown_data %}
+            <div class="category-breakdown">
+                {% for item in breakdown_data %}
+                    <div class="breakdown-row">
+                        <div>
+                            <h4>{{ item.category }}</h4>
+                            <p>{{ currency_symbol }}{{ "%.2f"|format(item.amount) }}</p>
+                        </div>
+
+                        <div class="bar-track">
+                            <div class="bar-fill" data-width="{{ item.percent }}"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span class="material-icons">bar_chart</span>
+                <p>No category breakdown available</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="chart-card">
+        <div class="section-title-row">
+            <h3>Financial Summary</h3>
+            <span>Overview</span>
+        </div>
+
+        <div class="summary-list">
+            <div class="summary-row">
+                <span>Average Expense</span>
+                <strong>{{ currency_symbol }}{{ "%.2f"|format(average_expense) }}</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Total Transactions</span>
+                <strong>{{ total_transactions }}</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Savings Rate</span>
+
+                {% if total_income > 0 %}
+                    <strong>{{ "%.1f"|format((balance / total_income) * 100) }}%</strong>
+                {% else %}
+                    <strong>0%</strong>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script id="chartData" type="application/json">
+{
+    "categoryLabels": {{ category_labels | tojson }},
+    "categoryAmounts": {{ category_amounts | tojson }},
+    "totalIncome": {{ total_income | tojson }},
+    "totalExpense": {{ total_expense | tojson }}
+}
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

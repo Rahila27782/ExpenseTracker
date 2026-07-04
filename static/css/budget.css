@@ -1,0 +1,175 @@
+/* ==========================================
+   BUDGET PAGE
+========================================== */
+
+.budget-container{
+    max-width:480px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ==========================
+   Cards
+========================== */
+
+.budget-card,
+.budget-form-card,
+.budget-status-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.budget-card{
+    text-align:center;
+}
+
+.budget-card p{
+    color:var(--subtext);
+    font-size:15px;
+    margin-bottom:10px;
+}
+
+.budget-card h2{
+    color:var(--success);
+    font-size:34px;
+    margin:0;
+}
+
+/* ==========================
+   Form
+========================== */
+
+.budget-form-card label{
+    display:block;
+    margin-bottom:10px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.budget-form-card input{
+    width:100%;
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:var(--card-soft);
+    color:var(--text);
+    font-size:16px;
+    margin-bottom:18px;
+    box-sizing:border-box;
+}
+
+.budget-form-card input:focus{
+    outline:none;
+    border-color:var(--accent);
+}
+
+.budget-form-card button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:var(--accent);
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.budget-form-card button:hover{
+    background:var(--accent-hover);
+}
+
+/* ==========================
+   Status
+========================== */
+
+.status-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.status-row span{
+    color:var(--subtext);
+    font-size:15px;
+}
+
+.status-row strong{
+    color:var(--text);
+    font-size:17px;
+}
+
+/* ==========================
+   Progress Bar
+========================== */
+
+.progress-track{
+    width:100%;
+    height:14px;
+    background:var(--card-soft);
+    border-radius:20px;
+    overflow:hidden;
+    margin:18px 0;
+}
+
+.progress-fill{
+    width:0;
+    height:100%;
+    background:linear-gradient(90deg,var(--success),#81C784);
+    border-radius:20px;
+    transition:width .8s ease;
+}
+
+.progress-text{
+    text-align:center;
+    color:var(--text);
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+/* ==========================
+   Messages
+========================== */
+
+.budget-message{
+    text-align:center;
+    padding:14px;
+    border-radius:12px;
+    font-weight:600;
+}
+
+.success{
+    background:var(--success-soft);
+    color:var(--success);
+}
+
+.danger{
+    background:var(--danger-soft);
+    color:var(--danger);
+}
+
+.neutral{
+    background:var(--card-soft);
+    color:var(--text);
+}
+
+/* ==========================
+   Mobile
+========================== */
+
+@media(max-width:480px){
+
+    .budget-container{
+        padding:18px;
+    }
+
+    .budget-card h2{
+        font-size:28px;
+    }
+
+}

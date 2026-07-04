@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Income
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add-income.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="add-container">
+
+    <!-- Header -->
+    <header class="page-header">
+        <a href="{{ url_for('home') }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Add Income</h1>
+            <p>Record your income</p>
+        </div>
+    </header>
+
+    <!-- Form -->
+    <form
+        class="form-card"
+        method="POST"
+        action="{{ url_for('save_income') }}">
+
+        <!-- Amount Card -->
+        <section class="amount-card">
+
+            <label>Amount</label>
+
+            <div class="amount-input">
+
+                <span>{{ currency_symbol }}</span>
+
+                <input
+                    type="number"
+                    id="incomeAmount"
+                    name="amount"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
+                    required>
+
+            </div>
+
+        </section>
+
+        <!-- Income Source -->
+
+        <label>Income Source</label>
+
+        <select
+            id="incomeSource"
+            name="source"
+            required>
+
+            <option value="">Select Source</option>
+            <option value="Salary">Salary</option>
+            <option value="Business">Business</option>
+            <option value="Freelancing">Freelancing</option>
+            <option value="Investments">Investments</option>
+            <option value="Bonus">Bonus</option>
+            <option value="Gift">Gift</option>
+            <option value="Rental Income">Rental Income</option>
+            <option value="Other">Other</option>
+
+        </select>
+
+        <!-- Date -->
+
+        <label>Date</label>
+
+        <input
+            type="date"
+            id="incomeDate"
+            name="date"
+            required>
+
+        <!-- Time -->
+
+        <label>Time</label>
+
+        <input
+            type="time"
+            id="incomeTime"
+            name="time"
+            required>
+
+        <!-- Payment Method -->
+
+        <label>Payment Method</label>
+
+        <select
+            id="incomePaymentMethod"
+            name="payment_method">
+
+            <option value="Cash">Cash</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="UPI">UPI</option>
+            <option value="Cheque">Cheque</option>
+            <option value="Card">Card</option>
+
+        </select>
+
+        <!-- Notes -->
+
+        <label>Notes</label>
+
+        <textarea
+            id="incomeNotes"
+            name="notes"
+            rows="4"
+            placeholder="Add notes (optional)..."></textarea>
+
+        <!-- Save Button -->
+
+        <button
+            class="save-btn"
+            type="submit">
+
+            Save Income
+
+        </button>
+
+    </form>
+
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/add-income.js') }}"></script>
+{% endblock %}

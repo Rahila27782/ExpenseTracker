@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Expense
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add-expense.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="add-container">
+
+    <!-- HEADER -->
+    <header class="page-header">
+        <a href="{{ url_for('home') }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Add Expense</h1>
+            <p>Record your spending</p>
+        </div>
+    </header>
+
+    <!-- FORM -->
+    <form
+        class="form-card"
+        method="POST"
+        action="{{ url_for('save_expense') }}">
+
+        <!-- AMOUNT -->
+        <section class="amount-card">
+
+            <label>Amount</label>
+
+            <div class="amount-input">
+
+                <span>{{ currency_symbol }}</span>
+
+                <input
+                    type="number"
+                    id="expenseAmount"
+                    name="amount"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
+                    required>
+
+            </div>
+
+        </section>
+
+        <!-- CATEGORY -->
+
+        <label>Category</label>
+
+        <select
+            id="expenseCategory"
+            name="category"
+            required>
+
+            <option value="">Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Travel">Travel</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Health">Health</option>
+            <option value="Education">Education</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
+
+        </select>
+
+        <!-- DATE -->
+
+        <label>Date</label>
+
+        <input
+            type="date"
+            id="expenseDate"
+            name="date"
+            required>
+
+        <!-- TIME -->
+
+        <label>Time</label>
+
+        <input
+            type="time"
+            id="expenseTime"
+            name="time"
+            required>
+
+        <!-- PAYMENT -->
+
+        <label>Payment Method</label>
+
+        <select
+            id="paymentMethod"
+            name="payment_method">
+
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Card">Card</option>
+            <option value="Net Banking">Net Banking</option>
+
+        </select>
+
+        <!-- NOTES -->
+
+        <label>Notes</label>
+
+        <textarea
+            id="expenseNotes"
+            name="notes"
+            rows="4"
+            placeholder="Add notes (optional)..."></textarea>
+
+        <!-- BUTTON -->
+
+        <button
+            class="save-btn"
+            type="submit">
+
+            Save Expense
+
+        </button>
+
+    </form>
+
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/add-expense.js') }}"></script>
+{% endblock %}

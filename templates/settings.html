@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}
+Settings
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="settings-container">
+
+    <header class="page-header">
+        <a href="{{ url_for('profile', month=selected_month, year=selected_year) }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Settings</h1>
+            <p>Manage app preferences</p>
+        </div>
+    </header>
+
+    {% if user %}
+
+    <!-- Currency -->
+
+    <section class="settings-card">
+
+        <h3>Currency</h3>
+
+        <form action="{{ url_for('update_currency') }}" method="POST" class="currency-form">
+
+            <select name="currency" required>
+
+                <option value="INR" {% if user.currency=="INR" %}selected{% endif %}>
+                    🇮🇳 INR - Indian Rupee ₹
+                </option>
+
+                <option value="USD" {% if user.currency=="USD" %}selected{% endif %}>
+                    🇺🇸 USD - US Dollar $
+                </option>
+
+                <option value="EUR" {% if user.currency=="EUR" %}selected{% endif %}>
+                    🇪🇺 EUR - Euro €
+                </option>
+
+                <option value="GBP" {% if user.currency=="GBP" %}selected{% endif %}>
+                    🇬🇧 GBP - Pound £
+                </option>
+
+                <option value="AED" {% if user.currency=="AED" %}selected{% endif %}>
+                    🇦🇪 AED - UAE Dirham
+                </option>
+
+                <option value="CAD" {% if user.currency=="CAD" %}selected{% endif %}>
+                    🇨🇦 CAD - Canadian Dollar C$
+                </option>
+
+                <option value="JPY" {% if user.currency=="JPY" %}selected{% endif %}>
+                    🇯🇵 JPY - Japanese Yen ¥
+                </option>
+
+            </select>
+
+            <button class="save-btn" type="submit">
+                Save Currency
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- Appearance -->
+
+    <section class="settings-card">
+
+        <h3>Appearance</h3>
+
+        <form action="{{ url_for('update_theme') }}" method="POST" class="currency-form">
+
+            <select name="theme" required>
+
+                <option value="light"
+                    {% if user.theme=="light" %}selected{% endif %}>
+                    ☀️ Light Mode
+                </option>
+
+                <option value="dark"
+                    {% if user.theme=="dark" %}selected{% endif %}>
+                    🌙 Dark Mode
+                </option>
+
+            </select>
+
+            <button class="save-btn" type="submit">
+                Save Theme
+            </button>
+
+        </form>
+
+        <hr>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>Data Mode</h3>
+                <p>Monthly financial tracking</p>
+            </div>
+
+            <span>Monthly</span>
+
+        </div>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>Database</h3>
+                <p>SQLite local storage</p>
+            </div>
+
+            <span>Active</span>
+
+        </div>
+
+    </section>
+
+    {% else %}
+
+    <section class="settings-card">
+
+        <div class="empty-state">
+
+            <span class="material-icons">settings</span>
+
+            <p>Settings are available after login.</p>
+
+            <small>
+                Login or create an account to customize your currency,
+                appearance, and preferences.
+            </small>
+
+            <div class="guest-actions">
+                <a href="{{ url_for('auth.login') }}">Login</a>
+                <a href="{{ url_for('auth.register') }}">Create Account</a>
+            </div>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+    <!-- About -->
+
+    <section class="settings-card about-card">
+
+        <h3>About App</h3>
+
+        <p>
+            Expense Tracker with Smart Financial Insights helps users manage
+            income, expenses, balance, budgets, charts and monthly reports
+            through a clean, simple and user-friendly interface.
+        </p>
+
+    </section>
+
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

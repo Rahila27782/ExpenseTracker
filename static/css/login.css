@@ -1,0 +1,268 @@
+/* ===========================================
+   LOGIN PAGE
+=========================================== */
+
+.login-container{
+    width:100%;
+    max-width:430px;
+    margin:auto;
+    padding:20px;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:linear-gradient(135deg,var(--accent-soft),var(--bg));
+}
+
+/* ==========================
+   LOGIN CARD
+========================== */
+
+.login-card{
+    background:var(--card);
+    border-radius:28px;
+    padding:40px 30px;
+    box-shadow:var(--shadow);
+    text-align:center;
+}
+
+/* ==========================
+   LOGO
+========================== */
+
+.logo{
+    width:90px;
+    height:90px;
+    margin:auto;
+    margin-bottom:20px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.logo .material-icons{
+    font-size:50px;
+    color:var(--accent);
+}
+
+.login-card h1{
+    color:var(--text);
+    font-size:30px;
+}
+
+.subtitle{
+    color:var(--accent);
+    font-size:15px;
+    margin-top:5px;
+    margin-bottom:30px;
+    font-weight:600;
+}
+
+.login-card h2{
+    color:var(--text);
+    margin-bottom:10px;
+}
+
+.description{
+    color:var(--subtext);
+    font-size:14px;
+    margin-bottom:30px;
+}
+
+/* ==========================
+   INPUTS
+========================== */
+
+.input-group{
+    display:flex;
+    align-items:center;
+    background:var(--card-soft);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:0 15px;
+    margin-bottom:18px;
+    transition:.25s;
+}
+
+.input-group:focus-within{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(212,175,55,.15);
+}
+
+.input-group .material-icons{
+    color:var(--subtext);
+    font-size:22px;
+}
+
+.input-group input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:var(--text);
+    padding:15px 12px;
+    font-size:15px;
+}
+
+.input-group input::placeholder{
+    color:var(--subtext);
+}
+
+.eye-icon{
+    cursor:pointer;
+    transition:.25s;
+}
+
+.eye-icon:hover{
+    color:var(--accent);
+}
+
+/* ==========================
+   REMEMBER ME
+========================== */
+
+.remember-row{
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom:25px;
+    font-size:14px;
+    color:var(--text);
+}
+
+.remember-row label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+/* ==========================
+   LOGIN BUTTON
+========================== */
+
+.login-btn{
+    width:100%;
+    border:none;
+    border-radius:15px;
+    background:var(--accent);
+    color:#fff;
+    font-size:17px;
+    font-weight:600;
+    padding:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(.95);
+}
+
+/* ==========================
+   REGISTER LINK
+========================== */
+
+.register-link{
+    margin-top:25px;
+    font-size:15px;
+    color:var(--subtext);
+}
+
+.register-link a{
+    color:var(--accent);
+    text-decoration:none;
+    font-weight:600;
+}
+
+.register-link a:hover{
+    text-decoration:underline;
+}
+
+/* ==========================
+   DARK MODE
+========================== */
+
+body.dark{
+    background:linear-gradient(135deg,#1b1b1b,var(--bg));
+}
+
+body.dark .logo{
+    background:#3b3214;
+}
+
+body.dark .input-group{
+    background:var(--card-soft);
+}
+
+body.dark .login-card{
+    border:1px solid var(--border);
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:480px){
+
+    .login-card{
+        padding:30px 20px;
+    }
+
+    .login-card h1{
+        font-size:26px;
+    }
+
+    .logo{
+        width:80px;
+        height:80px;
+    }
+
+    .logo .material-icons{
+        font-size:44px;
+    }
+
+}
+
+/* ==========================
+   VERIFY EMAIL CARD
+========================== */
+
+.verify-card{
+    margin-top:30px;
+    padding-top:25px;
+    border-top:1px solid #eee;
+}
+
+.verify-card h3{
+    color:#333;
+    margin-bottom:8px;
+    font-size:18px;
+}
+
+.verify-card p{
+    color:#777;
+    font-size:14px;
+    margin-bottom:18px;
+    line-height:1.5;
+}
+
+.resend-btn{
+    width:100%;
+    border:none;
+    border-radius:15px;
+    background:#3498DB;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    padding:14px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.resend-btn:hover{
+    background:#2980B9;
+}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+Success
+{% endblock %}
+
+{% block content %}
+
+<div class="empty-state" style="min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:30px;">
+
+    <span class="material-icons" style="font-size:85px; color:#22c55e;">
+        check_circle
+    </span>
+
+    <h1>{{ title }}</h1>
+
+    <p>{{ message }}</p>
+
+    <div class="guest-actions">
+
+    {% if login_button %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+    {% endif %}
+
+    {% if home_button %}
+        <a href="{{ url_for('home') }}">Home</a>
+    {% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

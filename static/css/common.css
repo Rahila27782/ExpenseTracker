@@ -1,0 +1,466 @@
+/* ===========================
+   GOOGLE FONT
+=========================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* ===========================
+   THEME VARIABLES
+=========================== */
+:root{
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --card-soft:#f8f8f8;
+    --text:#111827;
+    --subtext:#6b7280;
+    --border:#e5e7eb;
+    --accent:#D4AF37;
+    --accent-hover:#c59d20;
+    --accent-soft:#FFF8E1;
+    --danger:#ef4444;
+    --danger-soft:#ffebee;
+    --success:#22c55e;
+    --success-soft:#e8f5e9;
+    --blue:#1E88E5;
+    --shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+body.dark{
+    --bg:#121212;
+    --card:#1f1f1f;
+    --card-soft:#2a2a2a;
+    --text:#f5f5f5;
+    --subtext:#cfcfcf;
+    --border:#444;
+    --accent:#D4AF37;
+    --accent-hover:#c59d20;
+    --accent-soft:#3a3214;
+    --danger:#ff5252;
+    --danger-soft:#3a1f1f;
+    --success:#2ecc71;
+    --success-soft:#173221;
+    --blue:#64b5f6;
+    --shadow:0 12px 30px rgba(0,0,0,0.45);
+}
+
+/* ===========================
+   RESET
+=========================== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* ===========================
+   BODY
+=========================== */
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+/* ===========================
+   LINKS
+=========================== */
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+button{
+    border:none;
+    outline:none;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.primary-btn,
+.save-btn{
+    background:var(--accent);
+    color:#fff;
+    padding:12px 24px;
+    border-radius:14px;
+    font-weight:600;
+}
+
+.primary-btn:hover,
+.save-btn:hover{
+    background:var(--accent-hover);
+}
+
+/* ===========================
+   INPUTS
+=========================== */
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    outline:none;
+    font-size:15px;
+    background:var(--card);
+    color:var(--text);
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--accent);
+}
+
+input::placeholder,
+textarea::placeholder{
+    color:var(--subtext);
+}
+
+option{
+    background:var(--card);
+    color:var(--text);
+}
+
+/* ===========================
+   COMMON CARD
+=========================== */
+.card{
+    background:var(--card);
+    color:var(--text);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:var(--shadow);
+}
+
+/* ===========================
+   CONTAINER
+=========================== */
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:auto;
+}
+
+/* ===========================
+   PAGE HEADER
+=========================== */
+.page-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.page-header h1{
+    color:var(--text);
+}
+
+.page-header p{
+    color:var(--subtext);
+}
+
+.back-btn,
+.profile-icon{
+    background:var(--card);
+    color:var(--text);
+    box-shadow:var(--shadow);
+}
+
+/* ===========================
+   TABLES
+=========================== */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:var(--accent);
+    color:#fff;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid var(--border);
+}
+
+/* ===========================
+   FLEX UTILITIES
+=========================== */
+.flex{
+    display:flex;
+    align-items:center;
+}
+
+.space-between{
+    justify-content:space-between;
+}
+
+.center{
+    justify-content:center;
+}
+
+/* ===========================
+   GUEST ACTIONS
+=========================== */
+.guest-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:18px;
+}
+
+.guest-actions a{
+    padding:10px 16px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    background:var(--accent);
+    color:white;
+}
+
+.guest-actions a:nth-child(2){
+    background:var(--accent-soft);
+    color:var(--accent);
+}
+
+/* ===========================
+   EMPTY STATE
+=========================== */
+.empty-state{
+    text-align:center;
+    padding:30px 20px;
+    color:var(--subtext);
+}
+
+.empty-state .material-icons{
+    font-size:46px;
+    color:var(--accent);
+    margin-bottom:10px;
+}
+
+.empty-state p{
+    color:var(--text);
+    font-weight:600;
+}
+
+.empty-state small{
+    display:block;
+    margin-top:8px;
+    color:var(--subtext);
+    line-height:1.5;
+}
+
+/* ===========================
+   COMMON COLORS
+=========================== */
+.green{
+    color:var(--success);
+}
+
+.red{
+    color:var(--danger);
+}
+
+.blue{
+    color:var(--blue);
+}
+
+.gold{
+    color:var(--accent);
+}
+
+.income-text,
+.income-right{
+    color:var(--success);
+}
+
+.expense-text,
+.expense-right{
+    color:var(--danger);
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media(max-width:768px){
+    .card{
+        padding:15px;
+    }
+}
+
+/* =====================================
+   TOAST NOTIFICATIONS
+===================================== */
+
+#toast-container{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:5000;
+}
+
+.toast{
+    min-width:280px;
+    margin-bottom:12px;
+    padding:16px 22px;
+    border-radius:16px;
+    color:white;
+    font-weight:600;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+    transform:translateX(120%);
+    opacity:0;
+
+    transition:.35s;
+}
+
+.toast.show{
+    transform:translateX(0);
+    opacity:1;
+}
+
+.toast.success{
+    background:#2ECC71;
+}
+
+.toast.error{
+    background:#E74C3C;
+}
+
+.toast.warning{
+    background:#F39C12;
+}
+
+.toast.info{
+    background:#3498DB;
+}
+
+body.dark .toast{
+    box-shadow:0 15px 35px rgba(0,0,0,.55);
+}
+
+@media(max-width:600px){
+
+    #toast-container{
+        left:15px;
+        right:15px;
+        top:15px;
+    }
+
+    .toast{
+        width:100%;
+        min-width:unset;
+    }
+
+}
+
+.flash-container{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:99999;
+}
+
+.flash{
+    padding:15px 22px;
+    border-radius:12px;
+    color:#fff;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.flash-success{
+    background:#22c55e;
+}
+
+.flash-danger{
+    background:#ef4444;
+}
+
+.flash-warning{
+    background:#f59e0b;
+}
+
+.flash-info{
+    background:#3b82f6;
+}
+
+.toast.success{
+    background:#22c55e !important;
+    color:#fff !important;
+}
+
+.toast.danger,
+.toast.error{
+    background:#ef4444 !important;
+    color:#fff !important;
+}
+
+.toast.warning{
+    background:#f59e0b !important;
+    color:#fff !important;
+}
+
+.toast.info{
+    background:#3b82f6 !important;
+    color:#fff !important;
+}
+
+.toast,
+.toast *{
+    color:#fff !important;
+}
+
+/* ==========================
+   RESPONSIVE DESKTOP LAYOUT
+========================== */
+
+@media(min-width:900px){
+
+    .app-container,
+    .expenses-container,
+    .income-container,
+    .balance-container,
+    .budget-container,
+    .charts-container,
+    .reports-container,
+    .profile-container,
+    .settings-container,
+    .add-container{
+        max-width:980px !important;
+        padding:40px 30px 130px !important;
+    }
+
+    .page-header{
+        max-width:980px;
+    }
+
+    .summary-grid,
+    .stats-grid{
+        grid-template-columns:repeat(2, 1fr);
+    }
+
+    .expense-list-card,
+    .income-list-card,
+    .report-card,
+    .chart-card,
+    .stats-card,
+    .settings-card,
+    .profile-card,
+    .budget-card,
+    .budget-form-card,
+    .budget-status-card,
+    .balance-info-card{
+        max-width:none;
+    }
+}

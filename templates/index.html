@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}
+Expense Tracker with Smart Financial Insights
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="app-container">
+
+    <header class="home-header">
+        <div>
+            <p class="welcome-text" id="greetingText">Good Morning ☀️</p>
+
+            {% if user %}
+                <h1 id="userName">Welcome back, {{ user.full_name }}</h1>
+            {% else %}
+                <h1 id="userName">Welcome to Expense Tracker</h1>
+            {% endif %}
+
+            <span class="app-subtitle">Expense Tracker</span>
+        </div>
+
+        {% if user %}
+            <a class="profile-icon" href="{{ url_for('settings', month=selected_month, year=selected_year) }}">
+                <span class="material-icons">settings</span>
+            </a>
+        {% else %}
+            <a class="profile-icon" href="{{ url_for('profile', month=selected_month, year=selected_year) }}">
+                <span class="material-icons">person</span>
+            </a>
+        {% endif %}
+    </header>
+
+    <section class="date-selector" onclick="openDateModal()">
+        <span id="selectedDateText">📅 Loading...</span>
+        <span class="material-icons date-arrow">expand_more</span>
+    </section>
+
+    <section class="balance-card" onclick="openBalancePage()">
+        <p>Current Balance</p>
+        <h2 id="balanceAmount">{{ currency_symbol }}{{ "%.2f"|format(balance) }}</h2>
+    </section>
+
+    <section class="budget-card-home" onclick="openBudgetPage()">
+        <div class="budget-left">
+            <span class="material-icons">account_balance</span>
+
+            <div>
+                <h3>Monthly Budget</h3>
+                <p>Plan your monthly spending</p>
+            </div>
+        </div>
+
+        <span class="material-icons arrow">chevron_right</span>
+    </section>
+
+    <section class="summary-grid">
+        <div class="summary-card expense-card" onclick="openExpensesPage()">
+            <span class="material-icons">trending_down</span>
+            <p>Expenses</p>
+            <h3 id="expenseAmount">{{ currency_symbol }}{{ "%.2f"|format(total_expense) }}</h3>
+        </div>
+
+        <div class="summary-card income-card" onclick="openIncomePage()">
+            <span class="material-icons">trending_up</span>
+            <p>Income</p>
+            <h3 id="incomeAmount">{{ currency_symbol }}{{ "%.2f"|format(total_income) }}</h3>
+        </div>
+    </section>
+
+    <section class="card insights-card">
+        <div class="section-heading">
+            <span class="material-icons">lightbulb</span>
+            <h3>Smart Financial Insights</h3>
+        </div>
+
+        <div id="insightText">
+            {% if insights %}
+                <ul class="insights-list">
+                    {% for insight in insights %}
+
+<li class="insight {{ insight.type }}">
+
+    <span class="material-icons">
+        {{ insight.icon }}
+    </span>
+
+    {{ insight.message }}
+
+</li>
+
+{% endfor %}
+                </ul>
+            {% else %}
+                <p>No insights available.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="card recent-card">
+        <div class="section-heading">
+            <span class="material-icons">receipt_long</span>
+            <h3>Recent Transactions</h3>
+        </div>
+
+        <div id="transactionList" class="transaction-list">
+            {% if expenses %}
+                {% for expense in expenses %}
+                    <div class="transaction-item">
+                        <div>
+                            <strong>{{ expense.category }}</strong>
+                            <p>{{ expense.date }} • {{ expense.payment_method }}</p>
+                        </div>
+
+                        <span class="expense-text">
+                            -{{ currency_symbol }}{{ "%.2f"|format(expense.amount) }}
+                        </span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <span class="material-icons">inbox</span>
+                    <p>No transactions yet</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+</main>
+
+<button class="fab" onclick="openAddMenu()">
+    <span class="material-icons">add</span>
+</button>
+
+<div id="addMenu" class="add-menu">
+    <button onclick="openAddExpensePage()">
+        <span class="material-icons">remove_circle</span>
+        Add Expense
+    </button>
+
+    <button onclick="openAddIncomePage()">
+        <span class="material-icons">add_circle</span>
+        Add Income
+    </button>
+</div>
+
+<nav class="bottom-nav">
+    <a href="{{ url_for('home') }}" class="active">
+        <span class="material-icons">home</span>
+        <small>Home</small>
+    </a>
+
+    <a href="javascript:void(0)" onclick="openChartsPage()">
+        <span class="material-icons">pie_chart</span>
+        <small>Charts</small>
+    </a>
+
+    <a href="javascript:void(0)" onclick="openReportsPage()">
+        <span class="material-icons">description</span>
+        <small>Reports</small>
+    </a>
+
+    <a href="javascript:void(0)" onclick="openProfilePage()">
+        <span class="material-icons">person</span>
+        <small>Profile</small>
+    </a>
+</nav>
+
+<div id="dateModal" class="modal">
+    <div class="modal-box">
+
+        <h2>Select Month & Year</h2>
+
+        <div class="modal-date-title" id="modalDateTitle">
+            📅 Loading...
+        </div>
+
+        <div class="year-toggle" onclick="toggleYearList()">
+            <span id="modalYearText">2026 ▼</span>
+        </div>
+
+        <div id="yearList" class="year-list"></div>
+
+        <div id="monthList" class="month-list">
+            <button data-month="0">Jan</button>
+            <button data-month="1">Feb</button>
+            <button data-month="2">Mar</button>
+            <button data-month="3">Apr</button>
+            <button data-month="4">May</button>
+            <button data-month="5">Jun</button>
+            <button data-month="6">Jul</button>
+            <button data-month="7">Aug</button>
+            <button data-month="8">Sep</button>
+            <button data-month="9">Oct</button>
+            <button data-month="10">Nov</button>
+            <button data-month="11">Dec</button>
+        </div>
+
+        <div class="modal-actions">
+            <button class="cancel-btn" onclick="closeDateModal()">Cancel</button>
+            <button class="apply-btn" onclick="applyDateSelection()">Apply</button>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

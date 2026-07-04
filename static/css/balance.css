@@ -1,0 +1,137 @@
+/* ===========================================
+   BALANCE PAGE
+   Expense Tracker with Smart Financial Insights
+=========================================== */
+
+.balance-container{
+    max-width:480px;
+    margin:auto;
+    padding:25px 18px 40px;
+}
+
+/* ================= MAIN BALANCE ================= */
+
+.balance-main-card{
+    background:linear-gradient(135deg,#3B82F6,#60A5FA);
+    color:white;
+    border-radius:24px;
+    padding:30px;
+    text-align:center;
+    margin-bottom:25px;
+    box-shadow:0 15px 35px rgba(59,130,246,.30);
+}
+
+.balance-main-card p{
+    font-size:16px;
+    margin-bottom:10px;
+    color:white;
+}
+
+.balance-main-card h2{
+    font-size:42px;
+    font-weight:700;
+    color:white;
+}
+
+/* ================= SUMMARY ================= */
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.summary-card{
+    background:var(--card);
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:var(--shadow);
+}
+
+.summary-card .material-icons{
+    font-size:36px;
+    margin-bottom:10px;
+}
+
+.summary-card p{
+    color:var(--subtext);
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.summary-card h3{
+    color:var(--text);
+    font-size:22px;
+    font-weight:700;
+}
+
+.income-box .material-icons{
+    color:var(--success);
+}
+
+.expense-box .material-icons{
+    color:var(--danger);
+}
+
+/* ================= INSIGHT ================= */
+
+.balance-info-card{
+    background:var(--card);
+    border-radius:22px;
+    padding:22px;
+    box-shadow:var(--shadow);
+}
+
+.section-heading{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.section-heading .material-icons{
+    color:var(--blue);
+}
+
+.section-heading h3{
+    color:var(--text);
+}
+
+.balance-info-card p{
+    line-height:1.8;
+    color:var(--subtext);
+}
+
+.positive{
+    color:var(--success);
+    font-weight:600;
+}
+
+.negative{
+    color:var(--danger);
+    font-weight:600;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:500px){
+
+    .balance-container{
+        padding:20px 15px 30px;
+    }
+
+    .summary-grid{
+        grid-template-columns:1fr;
+    }
+
+    .balance-main-card h2{
+        font-size:36px;
+    }
+
+    .page-header h1{
+        font-size:26px;
+    }
+
+}

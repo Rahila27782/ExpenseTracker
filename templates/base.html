@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Expense Tracker{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+
+    {% block css %}{% endblock %}
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body class="{{ theme }}">
+
+{% block content %}
+{% endblock %}
+
+<!-- ==========================
+     Toast Notifications
+========================== -->
+
+<div id="toast-container">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+{% if messages %}
+
+{% for category,message in messages %}
+
+<div class="toast {{ category }}">
+    {{ message }}
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+{% endwith %}
+
+</div>
+
+{% block scripts %}
+{% endblock %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    document.querySelectorAll(".toast").forEach((toast,index)=>{
+
+        setTimeout(()=>{
+
+            toast.classList.add("show");
+
+        },150*index);
+
+        setTimeout(()=>{
+
+            toast.classList.remove("show");
+
+            setTimeout(()=>{
+
+                toast.remove();
+
+            },400);
+
+        },3000);
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>

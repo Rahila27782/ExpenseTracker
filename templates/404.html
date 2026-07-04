@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+<div class="empty-state" style="min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:30px;">
+    <span class="material-icons" style="font-size:80px;">error_outline</span>
+    <h1>404</h1>
+    <p>Page Not Found</p>
+    <small>The page you are looking for does not exist.</small>
+
+    <div class="guest-actions">
+        <a href="{{ url_for('home') }}">Go Home</a>
+    </div>
+</div>
+{% endblock %}

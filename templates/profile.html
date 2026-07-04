@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<main class="profile-container">
+
+    <header class="page-header">
+        <a href="{{ url_for('home', month=selected_month, year=selected_year) }}" class="back-btn">
+            <span class="material-icons">arrow_back</span>
+        </a>
+
+        <div>
+            <h1>Profile</h1>
+            <p>Manage your account</p>
+        </div>
+    </header>
+
+    {% if user %}
+
+    <section class="profile-card">
+
+    <div class="profile-image">
+
+        <img
+    id="profilePreview"
+    src="{% if user.profile_image and user.profile_image != 'default-profile.png' %}
+            {{ url_for('static', filename='uploads/profile_pics/' + user.profile_image) }}
+          {% else %}
+            {{ url_for('static', filename='images/default-profile.png') }}
+          {% endif %}"
+    alt="Profile Picture">
+
+    </div>
+
+    <h2>{{ user.full_name }}</h2>
+    <p>{{ user.email }}</p>
+    <small>Preferred Currency: {{ user.currency }}</small>
+
+<form
+    id="profileUploadForm"
+    action="{{ url_for('upload_profile_picture') }}"
+    method="POST"
+    enctype="multipart/form-data"
+    class="upload-form">
+
+    <input
+        type="file"
+        name="profile_image"
+        id="profileImageInput"
+        accept="image/*"
+        hidden>
+
+    <button type="button" class="upload-btn" onclick="openProfileImagePicker()">
+        <span class="material-icons">photo_camera</span>
+        Update Picture
+    </button>
+
+</form>
+
+</section>
+
+    <section class="stats-card">
+
+        <h3>Your Statistics</h3>
+
+        <div class="stats-grid">
+
+            <div class="stat-box">
+                <span class="material-icons green">trending_up</span>
+                <h4>{{ currency_symbol }}{{ "%.2f"|format(total_income) }}</h4>
+                <small>Total Income</small>
+            </div>
+
+            <div class="stat-box">
+                <span class="material-icons red">trending_down</span>
+                <h4>{{ currency_symbol }}{{ "%.2f"|format(total_expense) }}</h4>
+                <small>Total Expenses</small>
+            </div>
+
+            <div class="stat-box">
+                <span class="material-icons blue">account_balance_wallet</span>
+                <h4>{{ currency_symbol }}{{ "%.2f"|format(balance) }}</h4>
+                <small>Balance</small>
+            </div>
+
+            <div class="stat-box">
+                <span class="material-icons gold">receipt_long</span>
+                <h4>{{ total_transactions }}</h4>
+                <small>Transactions</small>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="menu-card">
+
+        <a href="{{ url_for('budget', month=selected_month, year=selected_year) }}">
+            <span class="material-icons">account_balance</span>
+            <span>Budget Planner</span>
+            <span class="material-icons right">chevron_right</span>
+        </a>
+
+        <a href="{{ url_for('reports', month=selected_month, year=selected_year) }}">
+            <span class="material-icons">description</span>
+            <span>Reports</span>
+            <span class="material-icons right">chevron_right</span>
+        </a>
+
+        <a href="{{ url_for('charts', month=selected_month, year=selected_year) }}">
+            <span class="material-icons">pie_chart</span>
+            <span>Charts</span>
+            <span class="material-icons right">chevron_right</span>
+        </a>
+
+        <a href="{{ url_for('settings', month=selected_month, year=selected_year) }}">
+            <span class="material-icons">settings</span>
+            <span>Settings</span>
+            <span class="material-icons right">chevron_right</span>
+        </a>
+
+    </section>
+
+    <section class="auth-card">
+
+        <a href="{{ url_for('auth.logout') }}" class="logout-action">
+            <span class="material-icons">logout</span>
+            Logout
+        </a>
+
+    </section>
+
+    {% else %}
+
+    <section class="profile-card">
+
+        <div class="profile-image">
+            <span class="material-icons">account_circle</span>
+        </div>
+
+        <h2>Guest User</h2>
+
+        <p>
+            Login to save your income, expenses, budgets, reports and insights.
+        </p>
+
+    </section>
+
+    <section class="auth-card">
+
+        <a href="{{ url_for('auth.login') }}" class="login-action">
+            Login
+        </a>
+
+        <a href="{{ url_for('auth.register') }}" class="register-action">
+            Create New Account
+        </a>
+
+    </section>
+
+    <section class="version-card">
+
+        <p>Why create an account?</p>
+
+        <small>
+            Your financial data is securely stored and available anytime across devices.
+        </small>
+
+    </section>
+
+    {% endif %}
+
+    <section class="version-card">
+        <p>Expense Tracker</p>
+        <small>Version 1.0</small>
+    </section>
+
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

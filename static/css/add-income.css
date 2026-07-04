@@ -1,0 +1,137 @@
+/* ===========================================
+   ADD INCOME PAGE
+=========================================== */
+
+.add-container{
+    max-width:480px;
+    margin:auto;
+    padding:25px 18px 40px;
+}
+
+/* ================= AMOUNT CARD ================= */
+
+.amount-card{
+    background:linear-gradient(135deg,var(--success),#6EE7A6);
+    color:white;
+    border-radius:28px;
+    padding:28px;
+    margin-bottom:25px;
+    box-shadow:0 15px 35px rgba(46,204,113,.30);
+}
+
+.amount-card label{
+    color:white;
+    font-size:15px;
+    display:block;
+    margin-bottom:15px;
+}
+
+.amount-input{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.amount-input span{
+    color:white;
+    font-size:42px;
+    font-weight:700;
+}
+
+.amount-input input{
+    width:100%;
+    background:#fff;
+    color:#222;
+    border:none;
+    border-radius:14px;
+    padding:12px 18px;
+    font-size:34px;
+    font-weight:700;
+    outline:none;
+}
+
+.amount-input input::placeholder{
+    color:#BBBBBB;
+}
+
+/* ================= FORM ================= */
+
+.form-card{
+    background:var(--card);
+    padding:25px;
+    border-radius:24px;
+    box-shadow:var(--shadow);
+}
+
+.form-card label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:8px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.form-card label:first-child{
+    margin-top:0;
+}
+
+.form-card select,
+.form-card input,
+.form-card textarea{
+    width:100%;
+    background:var(--card-soft);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:14px 16px;
+    font-size:15px;
+    transition:.3s;
+}
+
+.form-card select:focus,
+.form-card input:focus,
+.form-card textarea:focus{
+    outline:2px solid var(--success);
+    background:var(--success-soft);
+}
+
+/* ================= BUTTON ================= */
+
+.save-btn{
+    width:100%;
+    margin-top:28px;
+    padding:16px;
+    border:none;
+    border-radius:18px;
+    background:var(--success);
+    color:white;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 10px 25px rgba(46,204,113,.30);
+}
+
+.save-btn:hover{
+    background:#28B765;
+    transform:translateY(-2px);
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:500px){
+
+    .add-container{
+        padding:20px 15px 30px;
+    }
+
+    .page-header h1{
+        font-size:24px;
+    }
+
+    .amount-input span,
+    .amount-input input{
+        font-size:34px;
+    }
+
+}

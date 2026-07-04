@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account | Expense Tracker
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="register-container">
+
+    <div class="register-card">
+
+        <div class="logo">
+            <span class="material-icons">
+                account_balance_wallet
+            </span>
+        </div>
+
+        <h1>Expense Tracker</h1>
+
+        <p class="subtitle">
+            Create your personal finance account
+        </p>
+
+        <form action="{{ url_for('auth.register') }}" method="POST">
+
+            <!-- Full Name -->
+            <div class="input-group">
+                <span class="material-icons">person</span>
+
+                <input
+                    type="text"
+                    name="full_name"
+                    placeholder="Full Name"
+                    required>
+            </div>
+
+            <!-- Email -->
+            <div class="input-group">
+                <span class="material-icons">email</span>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    required>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <span class="material-icons">lock</span>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    required>
+
+                <span
+                    class="material-icons eye-icon"
+                    onclick="togglePassword('password', this)">
+                    visibility
+                </span>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="input-group">
+                <span class="material-icons">lock_outline</span>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirm_password"
+                    placeholder="Confirm Password"
+                    required>
+
+                <span
+                    class="material-icons eye-icon"
+                    onclick="togglePassword('confirmPassword', this)">
+                    visibility
+                </span>
+            </div>
+
+            <!-- Currency -->
+            <div class="input-group">
+
+                <span class="material-icons">
+                    payments
+                </span>
+
+                <select name="currency" required>
+
+                    <option value="INR">🇮🇳 INR (₹)</option>
+                    <option value="USD">🇺🇸 USD ($)</option>
+                    <option value="EUR">🇪🇺 EUR (€)</option>
+                    <option value="GBP">🇬🇧 GBP (£)</option>
+                    <option value="AED">🇦🇪 AED (د.إ)</option>
+                    <option value="CAD">🇨🇦 CAD (C$)</option>
+                    <option value="JPY">🇯🇵 JPY (¥)</option>
+
+                </select>
+
+            </div>
+
+            <button class="register-btn" type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="login-link">
+            Already have an account?
+
+            <a href="{{ url_for('auth.login') }}">
+                Login
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+{% endblock %}

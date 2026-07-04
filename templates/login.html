@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login | Expense Tracker
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            <span class="material-icons">
+                account_balance_wallet
+            </span>
+        </div>
+
+        <h1>Expense Tracker</h1>
+
+        <p class="subtitle">
+            Smart Financial Insights
+        </p>
+
+        <h2>Welcome Back 👋</h2>
+
+        <p class="description">
+            Sign in to continue managing your finances.
+        </p>
+
+        <!-- LOGIN FORM -->
+
+        <form action="{{ url_for('auth.login') }}" method="POST">
+
+            <div class="input-group">
+
+                <span class="material-icons">
+                    email
+                </span>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    required>
+
+            </div>
+
+            <div class="input-group">
+
+                <span class="material-icons">
+                    lock
+                </span>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    required>
+
+                <span
+                    class="material-icons eye-icon"
+                    onclick="togglePassword()">
+                    visibility
+                </span>
+
+            </div>
+
+            <div class="remember-row">
+                <label>
+                    <input type="checkbox">
+                    Remember Me
+                </label>
+            </div>
+
+            <div style="text-align:right;margin-bottom:18px;">
+
+    <a
+        href="{{ url_for('forgot_password') }}"
+        style="
+        color:#D4AF37;
+        text-decoration:none;
+        font-size:14px;
+        font-weight:600;">
+
+        Forgot Password?
+
+    </a>
+
+</div>
+
+            <button class="login-btn" type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <div class="register-link">
+            Don't have an account?
+
+            <a href="{{ url_for('auth.register') }}">
+                Create Account
+            </a>
+        </div>
+
+        <!-- ==========================
+             RESEND VERIFICATION
+        ========================== -->
+
+        <div class="verify-card">
+
+            <h3>Email not verified?</h3>
+
+            <p>
+                Enter your email below and we'll send a new verification email.
+            </p>
+
+            <form
+                action="{{ url_for('resend_verification') }}"
+                method="POST">
+
+                <div class="input-group">
+
+                    <span class="material-icons">
+                        alternate_email
+                    </span>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Registered Email"
+                        required>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="resend-btn">
+
+                    Resend Verification Email
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}

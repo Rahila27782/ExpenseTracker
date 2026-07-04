@@ -1,0 +1,198 @@
+/* ===========================
+   CHARTS PAGE
+=========================== */
+
+.charts-container{
+    max-width:480px;
+    margin:auto;
+    padding:20px;
+}
+
+/* ===========================
+   Statistics
+=========================== */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.stat-card{
+    background:var(--card);
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+    box-shadow:var(--shadow);
+}
+
+.stat-card .material-icons{
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.income-icon{
+    color:var(--success);
+}
+
+.expense-icon{
+    color:var(--danger);
+}
+
+.balance-icon{
+    color:var(--blue);
+}
+
+.warning-icon{
+    color:var(--accent);
+}
+
+.stat-card p{
+    color:var(--subtext);
+    font-size:14px;
+}
+
+.stat-card h3{
+    margin-top:8px;
+    color:var(--text);
+    font-size:20px;
+}
+
+/* ===========================
+   Chart Card
+=========================== */
+
+.chart-card{
+    background:var(--card);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:25px;
+    box-shadow:var(--shadow);
+}
+
+.section-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.section-title-row h3{
+    color:var(--text);
+    font-size:20px;
+}
+
+.section-title-row span{
+    color:var(--subtext);
+    font-size:14px;
+}
+
+canvas{
+    width:100% !important;
+    max-height:320px;
+}
+
+/* ===========================
+   Category Breakdown
+=========================== */
+
+.category-breakdown{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.breakdown-row{
+    border-bottom:1px solid var(--border);
+    padding-bottom:14px;
+}
+
+.breakdown-row:last-child{
+    border-bottom:none;
+}
+
+.breakdown-row h4{
+    color:var(--text);
+    margin-bottom:4px;
+}
+
+.breakdown-row p{
+    color:var(--subtext);
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.bar-track{
+    width:100%;
+    height:10px;
+    background:var(--card-soft);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.bar-fill{
+    height:100%;
+    width:0;
+    background:var(--blue);
+    border-radius:20px;
+    transition:width .8s ease;
+}
+
+/* ===========================
+   Summary
+=========================== */
+
+.summary-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.summary-row:last-child{
+    border-bottom:none;
+}
+
+.summary-row span{
+    color:var(--subtext);
+}
+
+.summary-row strong{
+    color:var(--text);
+}
+
+/* ===========================
+   Empty State
+=========================== */
+
+.empty-state{
+    text-align:center;
+    padding:35px 10px;
+}
+
+.empty-state .material-icons{
+    font-size:60px;
+    color:var(--accent);
+    margin-bottom:10px;
+}
+
+.empty-state p{
+    color:var(--text);
+}
+
+/* ===========================
+   Mobile
+=========================== */
+
+@media(max-width:480px){
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+}
