@@ -32,6 +32,7 @@ Settings
         <h3>Currency</h3>
 
         <form action="{{ url_for('update_currency') }}" method="POST" class="currency-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <select name="currency" required>
 
@@ -80,6 +81,7 @@ Settings
         <h3>Appearance</h3>
 
         <form action="{{ url_for('update_theme') }}" method="POST" class="currency-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <select name="theme" required>
 

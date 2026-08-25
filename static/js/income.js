@@ -3,7 +3,7 @@ console.log("income.js loaded");
 function openDeleteModal(id, source, amount) {
     const modal = document.getElementById("deleteModal");
     const message = document.getElementById("deleteMessage");
-    const confirmBtn = document.getElementById("confirmDeleteBtn");
+    const confirmForm = document.getElementById("confirmDeleteForm");
 
    const currencySymbol = document.getElementById("currencySymbol").value;
 
@@ -13,7 +13,7 @@ message.innerHTML = `
     ${currencySymbol}${Number(amount).toFixed(2)}?
 `;
 
-    confirmBtn.href = `/delete-income/${id}`;
+    confirmForm.action = `/delete-income/${id}`;
     modal.style.display = "flex";
 }
 

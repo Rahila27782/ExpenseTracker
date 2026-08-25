@@ -27,6 +27,7 @@ Create Account | Expense Tracker
         </p>
 
         <form action="{{ url_for('auth.register') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <!-- Full Name -->
             <div class="input-group">
@@ -58,6 +59,7 @@ Create Account | Expense Tracker
                     type="password"
                     id="password"
                     name="password"
+                    minlength="8"
                     placeholder="Password"
                     required>
 
@@ -76,6 +78,7 @@ Create Account | Expense Tracker
                     type="password"
                     id="confirmPassword"
                     name="confirm_password"
+                    minlength="8"
                     placeholder="Confirm Password"
                     required>
 

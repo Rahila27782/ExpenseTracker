@@ -93,22 +93,22 @@ Expenses
                             <button
                                 type="button"
                                 class="edit-btn"
-                                onclick="openEditModal(
-                                    '{{ expense.id }}',
-                                    '{{ expense.amount }}',
-                                    '{{ expense.category }}',
-                                    '{{ expense.date }}',
-                                    '{{ expense.time }}',
-                                    '{{ expense.payment_method }}',
-                                    `{{ expense.notes or '' }}`
-                                )">
+                                onclick='openEditModal(
+                                    {{ expense.id | tojson }},
+                                    {{ expense.amount | tojson }},
+                                    {{ expense.category | tojson }},
+                                    {{ expense.date | tojson }},
+                                    {{ expense.time | tojson }},
+                                    {{ expense.payment_method | tojson }},
+                                    {{ (expense.notes or "") | tojson }}
+                                )'>
                                 <span class="material-icons">edit</span>
                             </button>
 
                             <button
                                 type="button"
                                 class="delete-btn"
-                                onclick="openDeleteModal('{{ expense.id }}', '{{ expense.category }}', '{{ expense.amount }}')">
+                                onclick='openDeleteModal({{ expense.id | tojson }}, {{ expense.category | tojson }}, {{ expense.amount | tojson }})'>
                                 <span class="material-icons">delete</span>
                             </button>
                         </div>
@@ -145,9 +145,10 @@ Expenses
         <h2>Edit Expense</h2>
 
         <form id="editExpenseForm" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <label>Amount</label>
-            <input type="number" id="editAmount" name="amount" step="0.01" min="0" required>
+            <input type="number" id="editAmount" name="amount" step="0.01" min="0.01" required>
 
             <label>Category</label>
             <select id="editCategory" name="category" required>
@@ -201,9 +202,10 @@ Expenses
         <div class="delete-actions">
             <button class="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
 
-            <a id="confirmDeleteBtn" class="confirm-delete" href="#">
-                Delete
-            </a>
+            <form id="confirmDeleteForm" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="confirm-delete">Delete</button>
+            </form>
         </div>
     </div>
 </div>

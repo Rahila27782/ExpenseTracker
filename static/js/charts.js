@@ -39,7 +39,7 @@ function drawExpensePieChart(chartData) {
                 tooltip: {
                     callbacks: {
                         label: function (context) {
-                            return `${context.label}: {{ currency_symbol }}${context.raw}`;
+                            return `${context.label}: ${chartData.currencySymbol}${context.raw}`;
                         }
                     }
                 }
@@ -81,7 +81,7 @@ function drawIncomeExpenseChart(chartData) {
                 tooltip: {
                     callbacks: {
                         label: function (context) {
-                            return `{{ currency_symbol }}${context.raw}`;
+                            return `${chartData.currencySymbol}${context.raw}`;
                         }
                     }
                 }

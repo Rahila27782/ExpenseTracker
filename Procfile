@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn --no-control-socket app:app

@@ -246,6 +246,11 @@
     margin-top:22px;
 }
 
+.delete-actions form{
+    display:flex;
+    flex:1;
+}
+
 .cancel-delete,
 .confirm-delete,
 .cancel-edit,
@@ -266,6 +271,9 @@
 .confirm-delete{
     background:var(--danger);
     color:white;
+    border:0;
+    cursor:pointer;
+    width:100%;
 }
 
 .update-edit{

@@ -35,6 +35,7 @@ Login | Expense Tracker
         <!-- LOGIN FORM -->
 
         <form action="{{ url_for('auth.login') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <div class="input-group">
 
@@ -123,6 +124,7 @@ Login | Expense Tracker
             <form
                 action="{{ url_for('resend_verification') }}"
                 method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                 <div class="input-group">
 

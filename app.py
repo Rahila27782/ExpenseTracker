@@ -1,16 +1,20 @@
 import os
+import secrets
+from datetime import datetime
+from uuid import uuid4
+
 from dotenv import load_dotenv
 load_dotenv()
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
-import os
 from werkzeug.utils import secure_filename
-from flask import Flask, render_template, request, redirect, url_for, session
-from sqlalchemy import func, text
+from werkzeug.middleware.proxy_fix import ProxyFix
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from sqlalchemy import text
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from helpers.date_utils import get_selected_month_year
 from routes.auth_routes import auth_bp
 from helpers.calculations import get_recent_expenses
-from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import generate_password_hash
 
 from helpers.calculations import (
@@ -22,17 +26,29 @@ from helpers.calculations import (
     get_category_breakdown
 )
 from helpers.currency import get_currency_symbol, get_supported_currencies
-from helpers.auth import current_user, login_required
+from helpers.auth import current_user
 from database.models import db, Expense, Income, Budget, User
 from helpers.insights import generate_insights
 
 app = Flask(__name__)
-app.secret_key = os.getenv("SECRET_KEY")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+app.secret_key = os.getenv("SECRET_KEY") or secrets.token_hex(32)
 
+database_url = os.getenv("DATABASE_URL", "sqlite:///expense.db")
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql+psycopg://", 1)
+elif database_url.startswith("postgresql://"):
+    database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///expense.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PROFILE_UPLOAD_FOLDER"] = "static/uploads/profile_pics"
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.getenv("COOKIE_SECURE", "false").lower() == "true"
+
+csrf = CSRFProtect(app)
 
 # ==========================
 # Email Configuration
@@ -54,39 +70,43 @@ serializer = URLSafeTimedSerializer(app.secret_key)
 ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 
 
-def allowed_image(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+def allowed_image(file):
+    return (
+        "." in file.filename
+        and file.filename.rsplit(".", 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+        and (file.mimetype or "").startswith("image/")
+    )
 
 db.init_app(app)
 
 app.register_blueprint(auth_bp)
 
-
 with app.app_context():
+    os.makedirs(app.config["PROFILE_UPLOAD_FOLDER"], exist_ok=True)
     db.create_all()
 
-   # Safely add columns if old database already exists
+
 def add_column_if_missing(table_name, column_name, column_type):
-    columns = db.session.execute(
-        text(f"PRAGMA table_info({table_name})")
-    ).fetchall()
+    """Upgrade older SQLite databases without damaging existing records."""
+    if db.engine.dialect.name != "sqlite":
+        return
 
-    column_names = [col[1] for col in columns]
-
-    if column_name not in column_names:
-        db.session.execute(
-            text(
-                f"ALTER TABLE {table_name} "
-                f"ADD COLUMN {column_name} {column_type}"
-            )
-        )
+    columns = db.session.execute(text(f"PRAGMA table_info({table_name})")).fetchall()
+    if column_name not in [column[1] for column in columns]:
+        db.session.execute(text(
+            f"ALTER TABLE {table_name} ADD COLUMN {column_name} {column_type}"
+        ))
         db.session.commit()
 
+
+with app.app_context():
     add_column_if_missing("expense", "user_id", "INTEGER")
     add_column_if_missing("income", "user_id", "INTEGER")
     add_column_if_missing("budget", "user_id", "INTEGER")
-    add_column_if_missing("user", "profile_image", "TEXT")
-    add_column_if_missing("user", "is_verified", "INTEGER")
+    add_column_if_missing("user", "profile_image", "TEXT DEFAULT 'default-profile.png'")
+    add_column_if_missing("user", "is_verified", "INTEGER DEFAULT 0")
+    add_column_if_missing("user", "currency", "TEXT DEFAULT 'INR'")
+    add_column_if_missing("user", "theme", "TEXT DEFAULT 'light'")
 
 
 
@@ -95,6 +115,44 @@ def filter_by_month_year(query_model, month, year):
     return query_model.query.filter(
         query_model.date.like(f"{year}-{month:02d}-%")
     )
+
+
+def parse_transaction_form(kind):
+    """Validate and normalize income/expense form data."""
+    label = "expense" if kind == "expense" else "income"
+    category_field = "category" if kind == "expense" else "source"
+
+    try:
+        amount = float(request.form.get("amount", ""))
+    except (TypeError, ValueError):
+        return None, f"Please enter a valid {label} amount."
+
+    if amount <= 0:
+        return None, f"{label.title()} amount must be greater than zero."
+
+    category = (request.form.get(category_field) or "").strip()
+    date_value = (request.form.get("date") or "").strip()
+    time_value = (request.form.get("time") or "").strip()
+    payment_method = (request.form.get("payment_method") or "").strip()
+    notes = (request.form.get("notes") or "").strip()
+
+    if not category or not date_value or not time_value or not payment_method:
+        return None, "Please complete all required fields."
+
+    try:
+        datetime.strptime(date_value, "%Y-%m-%d")
+        datetime.strptime(time_value, "%H:%M")
+    except ValueError:
+        return None, "Please enter a valid date and time."
+
+    return {
+        "amount": amount,
+        category_field: category[:100],
+        "date": date_value,
+        "time": time_value,
+        "payment_method": payment_method[:50],
+        "notes": notes[:1000],
+    }, None
 
 
 
@@ -114,6 +172,8 @@ def confirm_verification_token(token, expiration=3600):
         return None
     
 def send_verification_email(user):
+    if not app.config["MAIL_USERNAME"] or not app.config["MAIL_PASSWORD"]:
+        raise RuntimeError("Email credentials are not configured.")
 
     token = generate_verification_token(user.email)
 
@@ -171,6 +231,9 @@ def confirm_password_reset_token(token, expiration=3600):
 
 
 def send_password_reset_email(user):
+    if not app.config["MAIL_USERNAME"] or not app.config["MAIL_PASSWORD"]:
+        raise RuntimeError("Email credentials are not configured.")
+
     token = generate_password_reset_token(user.email)
 
     reset_url = url_for(
@@ -274,41 +337,21 @@ def save_expense():
     if user is None:
         return redirect(url_for("auth.login"))
 
-    amount = request.form.get("amount")
-    category = request.form.get("category")
-    date = request.form.get("date")
-    time = request.form.get("time")
-    payment_method = request.form.get("payment_method")
-    notes = request.form.get("notes")
-
-    if not amount or not category:
+    data, error = parse_transaction_form("expense")
+    if error:
+        flash(error, "danger")
         return redirect(url_for("add_expense"))
 
     new_expense = Expense(
         user_id=user.id,
-        amount=amount,
-        category=category,
-        date=date,
-        time=time,
-        payment_method=payment_method,
-        notes=notes,
+        **data,
     )
-
-    try:
-        amount = float(amount)
-    except (TypeError, ValueError):
-        flash("Please enter a valid expense amount.", "danger")
-        return redirect(url_for("add_expense"))
-
-    if amount <= 0:
-        flash("Expense amount must be greater than zero.", "warning")
-        return redirect(url_for("add_expense"))
 
     db.session.add(new_expense)
     db.session.commit()
     flash("Expense added successfully!", "success")
-    saved_year = int(date.split("-")[0])
-    saved_month = int(date.split("-")[1])
+    saved_year = int(data["date"].split("-")[0])
+    saved_month = int(data["date"].split("-")[1])
 
     return redirect(url_for("home", month=saved_month, year=saved_year))
 
@@ -335,40 +378,21 @@ def save_income():
     if user is None:
         return redirect(url_for("auth.login"))
 
-    amount = request.form.get("amount")
-    source = request.form.get("source")
-    date = request.form.get("date")
-    time = request.form.get("time")
-    payment_method = request.form.get("payment_method")
-    notes = request.form.get("notes")
-
-    if not amount or not source:
+    data, error = parse_transaction_form("income")
+    if error:
+        flash(error, "danger")
         return redirect(url_for("add_income"))
 
     new_income = Income(
         user_id=user.id,
-        amount=amount,
-        source=source,
-        date=date,
-        time=time,
-        payment_method=payment_method,
-        notes=notes,
+        **data,
     )
-    try:
-        amount = float(amount)
-    except (TypeError, ValueError):
-        flash("Please enter a valid income amount.", "danger")
-        return redirect(url_for("add_income"))
-
-    if amount <= 0:
-        flash("Income amount must be greater than zero.", "warning")
-        return redirect(url_for("add_income"))
     db.session.add(new_income)
     db.session.commit()
     flash("Income added successfully!", "success")
 
-    saved_year = int(date.split("-")[0])
-    saved_month = int(date.split("-")[1])
+    saved_year = int(data["date"].split("-")[0])
+    saved_month = int(data["date"].split("-")[1])
 
     return redirect(url_for("home", month=saved_month, year=saved_year))
 
@@ -461,7 +485,7 @@ def balance():
     )
 
 
-@app.route("/delete-expense/<int:id>")
+@app.route("/delete-expense/<int:id>", methods=["POST"])
 def delete_expense(id):
     user = current_user()
 
@@ -480,7 +504,7 @@ def delete_expense(id):
     return redirect(url_for("expenses", month=delete_month, year=delete_year))
 
 
-@app.route("/delete-income/<int:id>")
+@app.route("/delete-income/<int:id>", methods=["POST"])
 def delete_income(id):
     user = current_user()
 
@@ -494,7 +518,7 @@ def delete_income(id):
 
     db.session.delete(income_record)
     db.session.commit()
-    db.session.commit()
+    flash("Income deleted successfully!", "success")
 
     return redirect(url_for("income", month=delete_month, year=delete_year))
 
@@ -508,12 +532,13 @@ def update_expense(id):
 
     expense = Expense.query.filter_by(id=id, user_id=user.id).first_or_404()
 
-    expense.amount = float(request.form.get("amount"))
-    expense.category = request.form.get("category")
-    expense.date = request.form.get("date")
-    expense.time = request.form.get("time")
-    expense.payment_method = request.form.get("payment_method")
-    expense.notes = request.form.get("notes")
+    data, error = parse_transaction_form("expense")
+    if error:
+        flash(error, "danger")
+        return redirect(url_for("expenses"))
+
+    for field, value in data.items():
+        setattr(expense, field, value)
 
     db.session.commit()
 
@@ -535,12 +560,13 @@ def update_income(id):
 
     income_record = Income.query.filter_by(id=id, user_id=user.id).first_or_404()
 
-    income_record.amount = float(request.form.get("amount"))
-    income_record.source = request.form.get("source")
-    income_record.date = request.form.get("date")
-    income_record.time = request.form.get("time")
-    income_record.payment_method = request.form.get("payment_method")
-    income_record.notes = request.form.get("notes")
+    data, error = parse_transaction_form("income")
+    if error:
+        flash(error, "danger")
+        return redirect(url_for("income"))
+
+    for field, value in data.items():
+        setattr(income_record, field, value)
 
     db.session.commit()
     flash("Income updated successfully!", "success")
@@ -678,8 +704,16 @@ def save_budget():
     if user is None:
         return redirect(url_for("auth.login"))
 
-    month = int(request.form.get("month"))
-    year = int(request.form.get("year"))
+    try:
+        month = int(request.form.get("month"))
+        year = int(request.form.get("year"))
+    except (TypeError, ValueError):
+        flash("Please select a valid month and year.", "danger")
+        return redirect(url_for("budget"))
+
+    if month not in range(1, 13) or year not in range(2000, 2201):
+        flash("Please select a valid month and year.", "danger")
+        return redirect(url_for("budget"))
     try:
         amount = float(request.form.get("amount"))
     except (TypeError, ValueError):
@@ -767,7 +801,7 @@ def update_currency():
 
     currency = request.form.get("currency")
 
-    if currency:
+    if currency in {item["code"] for item in get_supported_currencies()}:
         user.currency = currency
         db.session.commit()
 
@@ -821,6 +855,18 @@ def internal_server_error(error):
     db.session.rollback()
     return render_template("500.html"), 500
 
+
+@app.errorhandler(413)
+def file_too_large(error):
+    flash("Profile picture must be smaller than 5 MB.", "danger")
+    return redirect(url_for("profile"))
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(error):
+    flash("Your form expired. Please try again.", "warning")
+    return redirect(request.referrer or url_for("home"))
+
 @app.route("/upload-profile-picture", methods=["POST"])
 def upload_profile_picture():
     user = current_user()
@@ -835,15 +881,23 @@ def upload_profile_picture():
         flash("Please select an image.", "warning")
         return redirect(url_for("profile"))
 
-    if not allowed_image(file.filename):
+    if not allowed_image(file):
         flash("Only image files are allowed.", "danger")
         return redirect(url_for("profile"))
 
-    filename = secure_filename(file.filename)
-    filename = f"user_{user.id}_{filename}"
+    original_filename = secure_filename(file.filename)
+    extension = original_filename.rsplit(".", 1)[1].lower()
+    filename = f"user_{user.id}_{uuid4().hex}.{extension}"
 
     upload_path = os.path.join(app.config["PROFILE_UPLOAD_FOLDER"], filename)
+    os.makedirs(app.config["PROFILE_UPLOAD_FOLDER"], exist_ok=True)
     file.save(upload_path)
+
+    old_filename = user.profile_image
+    if old_filename and old_filename != "default-profile.png":
+        old_path = os.path.join(app.config["PROFILE_UPLOAD_FOLDER"], old_filename)
+        if os.path.isfile(old_path):
+            os.remove(old_path)
 
     user.profile_image = filename
     db.session.commit()
@@ -882,7 +936,7 @@ def verify_email(token):
 
 @app.route("/resend-verification", methods=["POST"])
 def resend_verification():
-    email = request.form.get("email")
+    email = (request.form.get("email") or "").strip().lower()
 
     if not email:
         flash("Please enter your email address.", "warning")
@@ -898,7 +952,11 @@ def resend_verification():
         flash("This email is already verified. Please login.", "info")
         return redirect(url_for("auth.login"))
 
-    send_verification_email(user)
+    try:
+        send_verification_email(user)
+    except Exception:
+        flash("The verification email could not be sent. Please try again later.", "danger")
+        return redirect(url_for("auth.login"))
 
     flash("Verification email sent again. Please check your inbox.", "success")
     return redirect(url_for("auth.login"))
@@ -906,12 +964,16 @@ def resend_verification():
 @app.route("/forgot-password", methods=["GET", "POST"])
 def forgot_password():
     if request.method == "POST":
-        email = request.form.get("email")
+        email = (request.form.get("email") or "").strip().lower()
 
         user = User.query.filter_by(email=email).first()
 
         if user:
-            send_password_reset_email(user)
+            try:
+                send_password_reset_email(user)
+            except Exception:
+                flash("The password reset email could not be sent. Please try again later.", "danger")
+                return redirect(url_for("forgot_password"))
 
         flash("If this email exists, a password reset link has been sent.", "info")
         return redirect(url_for("auth.login"))
@@ -934,11 +996,19 @@ def reset_password(token):
         return redirect(url_for("auth.login"))
 
     if request.method == "POST":
-        password = request.form.get("password")
+        password = request.form.get("password") or ""
         confirm_password = request.form.get("confirm_password")
 
         if password != confirm_password:
             flash("Passwords do not match.", "danger")
+            return redirect(url_for("reset_password", token=token))
+
+        if (
+            len(password) < 8
+            or not any(character.isalpha() for character in password)
+            or not any(character.isdigit() for character in password)
+        ):
+            flash("Password must be at least 8 characters and include a letter and a number.", "danger")
             return redirect(url_for("reset_password", token=token))
 
         user.password = generate_password_hash(password)

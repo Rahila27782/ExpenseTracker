@@ -3,21 +3,22 @@ __pycache__/
 *.py[cod]
 *.pyo
 
-# Virtual Environment
+# Virtual environments
+.venv/
 venv/
 
-# Environment Variables
+# Environment variables
 .env
 
-# SQLite Database
+# Local databases
 expense.db
 *.db
-
-# Database
 instance/
 
-# VS Code
-.vscode/
+# User uploads (keep only the directory placeholder)
+static/uploads/profile_pics/*
+!static/uploads/profile_pics/.gitkeep
 
-# macOS
+# Editors and operating systems
+.vscode/
 .DS_Store

@@ -13,7 +13,7 @@ def login_required(route_function):
     @wraps(route_function)
     def wrapper(*args, **kwargs):
         if "user_id" not in session:
-            return redirect(url_for("login"))
+            return redirect(url_for("auth.login"))
         return route_function(*args, **kwargs)
 
     return wrapper

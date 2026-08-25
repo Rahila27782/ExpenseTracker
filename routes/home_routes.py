@@ -8,6 +8,7 @@ from helpers.calculations import (
     get_recent_expenses
 )
 from helpers.insights import generate_insights
+from helpers.currency import get_currency_symbol
 
 home_bp = Blueprint("home", __name__)
 
@@ -19,6 +20,7 @@ home_bp = Blueprint("home", __name__)
 def home():
     month, year = get_selected_month_year()
     user = current_user()
+    currency_symbol = get_currency_symbol(user.currency) if user else "₹"
 
     if user:
         expenses = get_recent_expenses(
@@ -39,7 +41,8 @@ def home():
             year,
             summary["income"],
             summary["expense"],
-            summary["balance"]
+            summary["balance"],
+            currency_symbol
         )
 
     else:
@@ -65,5 +68,6 @@ def home():
         balance=summary["balance"],
         insights=insights,
         selected_month=month,
-        selected_year=year
+        selected_year=year,
+        currency_symbol=currency_symbol
     )

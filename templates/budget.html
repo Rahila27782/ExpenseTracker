@@ -59,6 +59,7 @@ Budget Planner
     <section class="budget-form-card">
 
         <form method="POST" action="{{ url_for('save_budget') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <input type="hidden" name="month" value="{{ selected_month }}">
             <input type="hidden" name="year" value="{{ selected_year }}">

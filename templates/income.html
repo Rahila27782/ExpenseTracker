@@ -105,22 +105,22 @@ Income
                         <button
                             type="button"
                             class="edit-btn"
-                            onclick="openEditModal(
-                                '{{ income.id }}',
-                                '{{ income.amount }}',
-                                '{{ income.source }}',
-                                '{{ income.date }}',
-                                '{{ income.time }}',
-                                '{{ income.payment_method }}',
-                                `{{ income.notes or '' }}`
-                            )">
+                            onclick='openEditModal(
+                                {{ income.id | tojson }},
+                                {{ income.amount | tojson }},
+                                {{ income.source | tojson }},
+                                {{ income.date | tojson }},
+                                {{ income.time | tojson }},
+                                {{ income.payment_method | tojson }},
+                                {{ (income.notes or "") | tojson }}
+                            )'>
                             <span class="material-icons">edit</span>
                         </button>
 
                         <button
                             type="button"
                             class="delete-btn"
-                            onclick="openDeleteModal('{{ income.id }}','{{ income.source }}','{{ income.amount }}')">
+                            onclick='openDeleteModal({{ income.id | tojson }}, {{ income.source | tojson }}, {{ income.amount | tojson }})'>
                             <span class="material-icons">delete</span>
                         </button>
 
@@ -183,9 +183,10 @@ Income
                 Cancel
             </button>
 
-            <a id="confirmDeleteBtn" class="confirm-delete" href="#">
-                Delete
-            </a>
+            <form id="confirmDeleteForm" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="confirm-delete">Delete</button>
+            </form>
 
         </div>
 
@@ -202,9 +203,10 @@ Income
         <h2>Edit Income</h2>
 
         <form id="editIncomeForm" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <label>Amount</label>
-            <input type="number" id="editAmount" name="amount" step="0.01" min="0" required>
+            <input type="number" id="editAmount" name="amount" step="0.01" min="0.01" required>
 
             <label>Income Source</label>
 

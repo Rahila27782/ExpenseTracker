@@ -10,7 +10,7 @@ CURRENCY_SYMBOLS = {
 
 
 def get_currency_symbol(currency_code):
-    return CURRENCY_SYMBOLS.get(currency_code, "{{ currency_symbol }}")
+    return CURRENCY_SYMBOLS.get(currency_code, "₹")
 
 
 def get_supported_currencies():

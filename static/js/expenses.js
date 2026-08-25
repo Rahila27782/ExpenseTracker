@@ -2,7 +2,7 @@ console.log("expenses.js loaded");
 function openDeleteModal(id, category, amount) {
     const modal = document.getElementById("deleteModal");
     const message = document.getElementById("deleteMessage");
-    const confirmBtn = document.getElementById("confirmDeleteBtn");
+    const confirmForm = document.getElementById("confirmDeleteForm");
 
    const currencySymbol = document.getElementById("currencySymbol").value;
 
@@ -12,7 +12,7 @@ message.innerHTML = `
     ${currencySymbol}${Number(amount).toFixed(2)}?
 `;
 
-    confirmBtn.href = `/delete-expense/${id}`;  
+    confirmForm.action = `/delete-expense/${id}`;
     modal.style.display = "flex";
 }
 
